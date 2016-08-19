@@ -1,0 +1,116 @@
+#-----------------------------------------------------------------------------
+#
+#  UCMenus.MAK
+#
+#  User-Customizable Menus
+#--------------------------------------+--------------------------------------
+#                                      |   Advanced Commercial Applications
+#  Version: 2.01                       |   IBM T.J. Watson Research Center
+#                                      |   P.O. Box 218
+#                                      |   Yorktown Heights, NY 10598
+#--------------------------------------+--------------------------------------
+#  History:
+#  --------
+#
+#  created: May 12 1993 by Alex BERTRAND
+#-----------------------------------------------------------------------------
+#  Used variables
+#  --------------
+#  if NODEBUG is defined, the non-debug version is built
+#  if PROFILE is defined, the version for the ixtra profiler is built
+#  by default, the debug version is built
+#
+# Targets
+# -------
+#  ucmdyna : DLL version
+#  ucmstat : statically linkable version
+#  all : both versions (default) plus online pgm reference (.INF)
+#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
+# Set UCMDEV to path of UCMenu toolkit
+#-------------------------------------------------------------------------
+UCMDEV = ..\
+
+ICC=icc
+LINK=link386
+
+!IFDEF PROFILE
+
+NODEBUG=
+ICCPROFILE=/Gh+
+LPROFILE=/NOE
+LIBPROFILE= _DOSCALL.LIB _PMWIN.LIB _PMGPI.LIB
+OBJPROFILE=dde4xtra.obj
+DIR=PROFILE\
+
+!ELSE
+
+ICCPROFILE=
+LPROFILE=
+LIBPROFILE=
+OBJPROFILE=
+
+!ENDIF
+
+!IFNDEF NODEBUG
+#--------------------------------------------------------------
+# There are problems when using the default PACKCODE option and
+# the pragma alloc_seg (page tuning) which prevent the use of
+# IPMD, so turn it off for the debug version
+#--------------------------------------------------------------
+#WARNMSG = /W3 /Kb+
+ICCFLAGS = /c /Gd- $(WARNMSG) /Sm /Re /ss /Gm+ /Q  /O- /Ti+ /I$(UCMDEV)\include
+LFLAGS=/CO /NOI /ALIGN:16 /LINENUMBERS /MAP:FULL /NOPACKCODE
+
+!ELSE
+ICCFLAGS=/Gm+ /Si- /c /Ss  /Wpro  /l  /I$(UCMDEV)\include 
+LFLAGS=/NOI /ALIGN:16 /LINENUMBERS /MAP:FULL
+DIR=NOCO\
+
+!ENDIF
+
+#------------------------- Build targets ------------------------------------
+
+all  :  ucmdyna ucmstat doc
+
+ucmenus : ucmdyna ucmstat
+
+ucmstat : $(UCMDEV)\lib\UCMenus.res $(UCMDEV)\lib\UCMinRes.res $(UCMDEV)\help\UCMenus.hlp $(UCMDEV)\lib\UCMstat.obj
+
+ucmdyna : $(UCMDEV)\lib\UCMenus.lib $(UCMDEV)\lib\UCMenus.dll $(UCMDEV)\help\UCMenus.hlp
+
+doc : $(UCMDEV)\help\UCMenus.INF
+
+#------------------------- Build instructions --------------------------------
+
+UCMenus.obj : UCMenus.c $(UCMDEV)\include\UCMenus.h UCMLocal.h
+      $(ICC)  $(ICCPROFILE) $(ICCFLAGS) /Ge- /FoUCMenus.obj UCMenus.c
+      mapsym ucmenus.map
+
+$(UCMDEV)\lib\UCMstat.obj : UCMenus.c $(UCMDEV)\include\UCMenus.h UCMLocal.h
+       $(ICC) $(ICCPROFILE) $(ICCFLAGS) /Fo$(UCMDEV)\lib\UCMstat.obj UCMenus.c
+      mapsym ucmenus.map
+
+$(UCMDEV)\lib\UCMenus.res : UCMenus.rc UCMLocal.h $(UCMDEV)\include\UCMenus.h
+      rc -r -i $(UCMDEV)\include  UCMenus.rc $(UCMDEV)\lib\UCMenus.res
+
+$(UCMDEV)\lib\UCMINRES.res : UCMenus.rc UCMLocal.h $(UCMDEV)\include\UCMenus.h
+      rc -DUCMINRES -r -i $(UCMDEV)\include  UCMenus.rc $(UCMDEV)\lib\UCMinRes.res
+
+$(UCMDEV)\lib\UCMenus.dll : UCMenus.obj UCMenus.def $(UCMDEV)\lib\UCMenus.res $(OBJPROFILE)
+      $(LINK)  UCMenus.obj $(OBJPROFILE), $(UCMDEV)\lib\UCMenus.dll $(LFLAGS) $(LPROFILE), ucmenus.map, $(LIBPROFILE) os2386 dde4mbs, UCMenus.def
+      rc $(UCMDEV)\lib\UCMenus.res $(UCMDEV)\lib\UCMenus.DLL
+
+$(UCMDEV)\lib\UCMenus.lib : UCMenus.def
+      implib /NOLOGO $(UCMDEV)\lib\UCMenus.lib UCMenus.def
+
+$(UCMDEV)\help\UCMenus.hlp : $(UCMDEV)\help\UCMenus.ipf
+      ipfc $(UCMDEV)\help\ucmenus.ipf
+
+###########################################
+# Produce online programmers reference:
+###########################################
+$(UCMDEV)\help\UCMENUS.INF : $(UCMDEV)\help\ucmref.ipf UCMLocal.h
+      ipfcprep $(UCMDEV)\help\ucmref.ipf $(UCMDEV)\help\ucmenus.pre
+      ipfc $(UCMDEV)\help\ucmenus.pre /inf
+

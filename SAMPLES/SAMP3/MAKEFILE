@@ -1,0 +1,65 @@
+# Make File
+
+#-------------------------------------------------------------------------
+# Set UCMDEV to path of UCMenu toolkit
+#-------------------------------------------------------------------------
+
+UCMDEV = ..\..
+ 
+all: samp3.EXE
+samp3: samp3.EXE
+ 
+#-------------------------------------------------------------------------
+# Flags used for C compiler.
+#-------------------------------------------------------------------------
+# /c      compile don't link
+# /Gd-    Statically link C runtime library
+# /Sm     Allow migration extensions
+# /Re     Non-subsytem environment
+# /ss     allow  // for comment lines
+# /Gm+    use the multi-threaded libraries
+# /Q      No compiler logo
+# /Ti+    Generate C Set/2 Debugger information
+# /O+     Optimize generated code
+ 
+#For debugging:
+#iccflags    = /c /Gd- /Sm /Re /ss /Gm+ /Q  /I$(UCMDEV)\include /O- /Ti+
+#lflags = /NOPACKCODE /DEBUG /NOE /ALIGN:16 /EXEPACK /M /BASE:0x10000
+
+iccflags   = /c /Gd- /Sm /Re /ss /Gm+ /Q  /I$(UCMDEV)\include /O+ /Ti-
+lflags = /NOE /ALIGN:16 /EXEPACK /M /BASE:0x10000
+
+#-------------------------------------------------------------------------
+# Make samp3.EXE.  Note that we also compile UCMUTILS.C so that it is
+# compiled with the same compiler options as the application to which
+# it will be linked.
+#-------------------------------------------------------------------------
+ 
+samp3.exe:    samp3.obj  ucmutils.obj samp3.res samp3.def $(UCMDEV)\lib\ucmstat.obj
+  ilink /NOFREEFORMAT samp3.obj ucmutils.obj $(UCMDEV)\lib\ucmstat.obj ,,,,samp3.def $(lflags)
+  rc samp3.res
+ 
+samp3.obj:     samp3.c samp3.h
+  icc $(iccflags) samp3.c
+
+ucmutils.obj:  $(UCMDEV)\source\ucmutils.c $(UCMDEV)\include\ucmutils.h
+  icc $(iccflags) $(UCMDEV)\source\ucmutils.c
+
+# Note: If application uses context menus/dialogs of UCMenu control, then
+#       the UCMENUS.RES resources must be appended to the applications resources.
+
+samp3.res:    samp3.rc samp3.h dialog.dlg dialog.h
+  rc -r -i $(UCMDEV)\include samp3.rc samp3.res
+  copy samp3.res /b + $(UCMDEV)\lib\ucmenus.res /b samp3.res
+
+#-------------------------------------------------------------------------
+# To dynamically link the UCMENUS code, replace the first section above
+# with the following.  Note that this will result in a smaller .EXE but
+# requires that the UCMENUS.DLL file be in the LIBPATH or current directory
+# at run time.
+#-------------------------------------------------------------------------
+ 
+#samp3.exe:    samp3.obj  ucmutils.obj samp3.res samp3.def $(UCMDEV)\LIB\UCMENUS.LIB
+#  ilink /NOFREEFORMAT samp3.obj ucmutils.obj,,,$(UCMDEV)\LIB\UCMENUS.LIB,samp3.def $(lflags)
+#  rc samp3.res
+

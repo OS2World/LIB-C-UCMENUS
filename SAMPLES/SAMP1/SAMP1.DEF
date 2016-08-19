@@ -1,0 +1,7 @@
+; Module definition file
+ 
+NAME SAMP1 WINDOWAPI
+DESCRIPTION '(c) Copyright IBM Corp. 1994'
+PROTMODE
+STACKSIZE 50000
+

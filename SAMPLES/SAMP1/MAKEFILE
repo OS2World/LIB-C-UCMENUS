@@ -1,0 +1,66 @@
+# Make File
+
+#-------------------------------------------------------------------------
+# Set UCMDEV to path of UCMenu toolkit
+#-------------------------------------------------------------------------
+
+UCMDEV = ..\..
+ 
+all: samp1.EXE
+samp1: samp1.EXE
+ 
+#-------------------------------------------------------------------------
+# Flags used for C compiler.
+#-------------------------------------------------------------------------
+# /c      compile don't link
+# /Gd-    Statically link C runtime library
+# /Sm     Allow migration extensions
+# /Re     Non-subsytem environment
+# /ss     allow  // for comment lines
+# /Gm+    use the multi-threaded libraries
+# /Q      No compiler logo
+# /Ti+    Generate C Set/2 Debugger information
+# /O+     Optimize generated code
+ 
+#For debugging:
+#iccflags    = /c /Gd- /Sm /Re /ss /Gm+ /Q  /I$(UCMDEV)\include /O- /Ti+
+#lflags = /NOPACKCODE /DEBUG /NOE /ALIGN:16 /EXEPACK /M /BASE:0x10000
+
+iccflags   = /c /Gd- /Sm /Re /ss /Gm+ /Q  /I$(UCMDEV)\include /O+ /Ti-
+lflags = /NOE /ALIGN:16 /EXEPACK /M /BASE:0x10000
+
+#-------------------------------------------------------------------------
+# Make samp1.EXE.  Note that we also compile UCMUTILS.C so that it is
+# compiled with the same compiler options as the application to which
+# it will be linked.  This sample uses static linking of the UCMENUS code.
+#-------------------------------------------------------------------------
+ 
+samp1.exe:    samp1.obj  ucmutils.obj samp1.res samp1.def $(UCMDEV)\lib\ucmstat.obj
+  ilink /NOFREEFORMAT samp1.obj ucmutils.obj $(UCMDEV)\lib\ucmstat.obj ,,,,samp1.def $(lflags)
+  rc samp1.res
+ 
+samp1.obj:     samp1.c samp1.h
+  icc $(iccflags) samp1.c
+
+ucmutils.obj:  $(UCMDEV)\source\ucmutils.c $(UCMDEV)\include\ucmutils.h
+  icc $(iccflags) $(UCMDEV)\source\ucmutils.c
+
+# Note: If application uses context menus/dialogs of UCMenu control, then
+#       the UCMENUS.RES resources must be appended to the applications resources.
+
+samp1.res:    samp1.rc samp1.h
+  rc -r -i $(UCMDEV)\include samp1.rc samp1.res
+  copy samp1.res /b + $(UCMDEV)\lib\ucmenus.res /b samp1.res
+
+#-------------------------------------------------------------------------
+# To dynamically link the UCMENUS code, replace the first section above
+# with the following.  Note that this will result in a smaller .EXE but
+# requires that the UCMENUS.DLL file be in the LIBPATH or current directory
+# at run time.
+#-------------------------------------------------------------------------
+ 
+#samp1.exe:    samp1.obj  ucmutils.obj samp1.res samp1.def $(UCMDEV)\LIB\UCMENUS.LIB
+#  ilink /NOFREEFORMAT samp1.obj ucmutils.obj,,,$(UCMDEV)\LIB\UCMENUS.LIB,samp1.def $(lflags)
+#  rc samp1.res
+ 
+

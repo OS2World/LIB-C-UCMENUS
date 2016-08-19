@@ -1,0 +1,34 @@
+DLGINCLUDE 1 "D:\SOURCE\OS2DEV\DLG1\dialog.h"
+
+DLGTEMPLATE MAINDLG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "UCMenu Sample - Dialog Window", MAINDLG, 27, 27, 257, 106, NOT 
+            FS_DLGBORDER | FS_SIZEBORDER | WS_VISIBLE, FCF_SYSMENU | 
+            FCF_TITLEBAR | FCF_MINBUTTON
+    BEGIN
+        RTEXT           "Commands:", 105, 2, 69, 69, 8, NOT WS_GROUP
+        LTEXT           "", COLOR, 77, 82, 170, 8, NOT WS_GROUP
+        MLE             "", CMDLIST, 77, 29, 171, 47, MLS_READONLY | 
+                        MLS_HSCROLL | MLS_VSCROLL
+                        PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+        DEFPUSHBUTTON   "E~xit", DID_OK, 5, 5, 63, 14
+        LTEXT           "", DYNINFO, 4, 97, 248, 7, DT_VCENTER | NOT 
+                        WS_GROUP
+                        PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+        PUSHBUTTON      "~Help", PB_HELP, 199, 6, 48, 14
+    END
+END
+
+/* Dialog for editing toolbar text */
+
+DLGTEMPLATE DLG_TOOLBARTEXT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Edit Toolbar Text", DLG_TOOLBARTEXT, 12, 6, 131, 40, WS_VISIBLE, 
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        ENTRYFIELD      "", TOOLBAR_TEXT, 7, 24, 117, 8, ES_MARGIN
+        DEFPUSHBUTTON   "~OK", DID_OK, 6, 4, 40, 14
+        PUSHBUTTON      "~Cancel", DID_CANCEL, 54, 4, 70, 14
+    END
+END
+

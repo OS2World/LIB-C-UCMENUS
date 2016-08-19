@@ -1,0 +1,286 @@
+/***************************************************************************/
+/***************************************************************************/
+/*                        DISCLAIMER OF WARRANTIES.                        */
+/***************************************************************************/
+/***************************************************************************/
+/*                                                                         */
+/*  Copyright (C) 1995 IBM Corporation                                     */
+/*                                                                         */
+/*      DISCLAIMER OF WARRANTIES.  The following [enclosed] code is        */
+/*      sample code created by IBM Corporation. This sample code is not    */
+/*      part of any standard or IBM product and is provided to you solely  */
+/*      for  the purpose of assisting you in the development of your       */
+/*      applications.  The code is provided "AS IS", without               */
+/*      warranty of any kind.  IBM shall not be liable for any damages     */
+/*      arising out of your use of the sample code, even if they have been */
+/*      advised of the possibility of such damages.                        */
+/***************************************************************************/
+//----------------------------------------------------------------------------
+//
+// UCMENUS.RC
+//
+// User-Customizable Menus
+//-------------------------------------+--------------------------------------
+//                                     |   Advance Commercial Applications
+// Version: 2.01                       |   IBM T.J. Watson Research Center
+//                                     |   P.O. Box 218
+//                                     |   Yorktown Heights, NY 10598
+//-------------------------------------+--------------------------------------
+// History:
+// --------
+//
+// created: Jul 07 1993 by Alex BERTRAND
+//
+// May 31, 1996: (MAM) Changed "-1" dialog control IDs to "0"
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// Includes
+//----------------------------------------------------------------------------
+#define  INCL_PM
+#include <os2.h>
+#include "UCMEnus.h"     // for the IDs of the context menu items which are in the API
+#include "UCMLocal.H"    // for internal IDs
+
+// To define minimal resources (e.g. no context menu and no
+// customization dialogs) define UCMINRES.  This is used to
+// build the UCMINRES.RES file for use by applications which
+// do not use the UCMenus context menu or customization dialogs.
+
+BITMAP  UCMENUID_DEFAULTBMP  QSTMARK.BMP
+BITMAP  UCMENUID_SPACERBMP   SPACER.BMP
+
+#if !defined(UCMINRES)  /* All the rest not needed for minimal resources */
+
+ICON    ID_SHREDDER    SHREDDER.ICO
+
+MENU IDD_UCMCTXT
+BEGIN
+  MENUITEM   "Edit item...",               IDM_UCM_EDIT  ,          MIS_TEXT
+  MENUITEM   "Create item...",             IDM_UCM_CREATE,          MIS_TEXT
+  MENUITEM   "Delete item",                IDM_UCM_DELETE,          MIS_TEXT
+  MENUITEM   "",                           IDM_UCM_SEPARATOR,       MIS_SEPARATOR
+  MENUITEM   "Change style...",            IDM_UCM_STYLE,           MIS_TEXT
+  MENUITEM   "Load Default",               IDM_UCM_DEFAULT,         MIS_TEXT
+  MENUITEM   "Import...",                  IDM_UCM_LOAD,            MIS_TEXT
+  MENUITEM   "Export...",                  IDM_UCM_SAVEAS,          MIS_TEXT
+END
+
+/* (MAM) Added OK and Cancel buttons to customization dialog template */
+
+DLGTEMPLATE IDD_UCMSETTINGS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Customization", IDD_UCMSETTINGS, 7, 6, 276, 192,
+                             FS_MOUSEALIGN, FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        CONTROL         "", IDC_UCMNB, 6,19, 250, 170, WC_NOTEBOOK,
+                        BKS_BACKPAGESBR | BKS_MAJORTABRIGHT | BKS_SQUARETABS |
+                        BKS_STATUSTEXTLEFT | BKS_SPIRALBIND
+                        BKS_TABTEXTLEFT | WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        DEFPUSHBUTTON   "~OK", DID_OK, 12, 2, 52, 14
+        PUSHBUTTON      "~Cancel", DID_CANCEL, 72, 2, 52, 14
+    END
+END
+
+DLGTEMPLATE IDD_UCMNBP1 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Dialog Title", IDD_UCMNBP1, 0, 0, 203, 136, NOT FS_DLGBORDER |
+WS_VISIBLE, FCF_NOBYTEALIGN
+    BEGIN
+        LTEXT           "Title :",  104, 9, 116, 32, 8
+        ENTRYFIELD      "",         IDC_UCMNBP1TITLE, 43, 116, 124, 8, ES_MARGIN
+        GROUPBOX        "Bitmap",   101, 7, 31, 103, 80
+        CONTROL         "",         IDC_UCMNBP1BITMAP,   9, 32, 98, 72, WC_STATIC, SS_BKGNDRECT | WS_GROUP
+        PUSHBUTTON      "No Bitmap",             IDB_UCMNBP1NOBMP,         112, 95, 75, 13
+        PUSHBUTTON      "Built-in...",           IDB_UCMNBP1PREDEFINED,    112, 79, 75, 13
+        PUSHBUTTON      "Load file...",          IDB_UCMNBP1LOAD,          112, 63, 75, 13
+        PUSHBUTTON      "Create...",             IDB_UCMNBP1CREATE,        112, 47, 75, 13
+        PUSHBUTTON      "Edit...",               IDB_UCMNBP1EDIT,          112, 31, 75, 13
+        LTEXT           "",                      IDC_UCMNBP1FILENAME,        8, 23, 179, 8
+          PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+        PUSHBUTTON      "Undo",  IDB_UCMNBP1UNDO, 6, 4, 40, 14
+        PUSHBUTTON      "Help",  IDB_UCMNBP1HELP, 49, 4, 40, 14, BS_HELP | BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE IDD_UCMNBP2 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Dialog Title", IDD_UCMNBP2, 0, 0, 203, 136, NOT FS_DLGBORDER | WS_VISIBLE, FCF_NOBYTEALIGN
+    BEGIN
+        LTEXT           "Loading the actions...", IDC_UCMNBP2LOADING  , 11, 126, 120, 8  PRESPARAMS PP_FOREGROUNDCOLOR, 0x00FF0000L
+
+        CONTROL         "",       IDC_UCMNBP2FLIST, 11, 40, 153, 73, WC_COMBOBOX,
+                                  CBS_DROPDOWN | WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        CONTROL         "",       IDC_UCMNBP2DLIST, 0, 0, 0, 0, WC_LISTBOX, NOT WS_VISIBLE | LS_NOADJUSTPOS
+        LTEXT           "Function :",   0, 11, 116, 90, 8
+        LTEXT           "Parameters :", 0, 11, 86, 55, 8
+        ENTRYFIELD      "",       IDC_UCMNBP2PARAMS, 13, 74, 149, 8, ES_MARGIN
+        LTEXT           "Function description :", 0, 11, 60, 149, 8
+        MLE             "",       IDC_UCMNBP2DESC, 13, 22, 149, 36, WS_VISIBLE | MLS_READONLY | MLS_WORDWRAP | MLS_VSCROLL | MLS_IGNORETAB
+        DEFPUSHBUTTON   "Undo",     IDB_UCMNBP2UNDO, 6, 4, 40, 14
+        PUSHBUTTON      "Help", IDB_UCMNBP2HELP, 49, 4, 40, 14, BS_HELP | BS_NOPOINTERFOCUS
+    END
+END
+
+DLGTEMPLATE IDD_UCMNBP0 LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Dialog Title", IDD_UCMNBP0, 0, 0, 203, 136, NOT FS_DLGBORDER |
+            WS_VISIBLE, FCF_NOBYTEALIGN
+    BEGIN
+        LTEXT           "Position :", 0, 24, 108, 83, 8
+        AUTORADIOBUTTON "End",           IDC_UCMNBP0END, 34, 94, 39, 10, WS_TABSTOP
+        AUTORADIOBUTTON "After current", IDC_UCMNBP0AFTER,  34, 84, 77, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Before current",IDC_UCMNBP0BEFORE, 34, 74, 91, 10, WS_TABSTOP
+        LTEXT           "Style :", 0, 24, 57, 62, 8
+//        AUTOCHECKBOX    "Non selectable item (for display only)", IDC_UCMNBP0STATIC, 34, 42, 94, 10
+        AUTORADIOBUTTON "Regular item", IDC_UCMNBP0REGULAR, 34, 42, 94, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Non selectable item (display only)", IDC_UCMNBP0STATIC, 34, 32, 165, 10, WS_TABSTOP
+        AUTORADIOBUTTON "Spacer item",  IDC_UCMNBP0SPACER,  34, 22, 94, 10, WS_TABSTOP
+        PUSHBUTTON      "Undo", IDB_UCMNBP0UNDO, 6, 4, 40, 14
+        PUSHBUTTON      "Help", IDB_UCMNBP0HELP, 49, 4, 40, 14, BS_HELP | BS_NOPOINTERFOCUS
+    END
+END
+
+
+DLGTEMPLATE IDD_UCMNSTYLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "User Customizable Menu Style", IDD_UCMNSTYLE, -11, -23, 203,
+            149, FS_MOUSEALIGN, FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        AUTOCHECKBOX    "Show bubble help", IDC_UCMNSTLBUBBLE, 16, 130, 135, 10
+        RTEXT           "Delay",  IDC_UCMNSTLDELAYLABEL, 15, 115, 30, 8
+        RTEXT           "Read",   IDC_UCMNSTLREADLABEL,  92, 115, 30, 8
+        LTEXT           "(msec)", IDC_UCMNSTLMSECLABEL,  165,115, 30, 8
+        ENTRYFIELD      "", IDC_UCMNSTLDELAY, 50,  115, 32, 8, ES_MARGIN
+        ENTRYFIELD      "", IDC_UCMNSTLREAD , 127, 115, 32, 8, ES_MARGIN
+
+        AUTOCHECKBOX    "Show the text", IDC_UCMNSTLTEXT, 16, 100, 135, 10
+        AUTOCHECKBOX    "Frame the items", IDC_UCMNSTLFRAMED, 16, 85, 135,
+                        10
+        AUTOCHECKBOX    "Autosize", IDC_UCMNSTLFORCESIZE, 16, 71, 135,
+                        10
+        ENTRYFIELD      "", IDC_UCMNSTLCX, 50, 58, 32, 8, ES_MARGIN
+        ENTRYFIELD      "", IDC_UCMNSTLCY, 127, 58, 32, 8, ES_MARGIN
+        RTEXT           "Width", IDC_UCMNSTLCXLABEL, 15, 56, 30, 8
+        RTEXT           "Height", IDC_UCMNSTLCYLABEL, 92, 56, 30, 8
+        DEFPUSHBUTTON   "OK", IDB_UCMNSTLOK, 6, 4, 40, 14
+        PUSHBUTTON      "Cancel", IDB_UCMNSTLCANCEL, 49, 4, 40, 14
+        PUSHBUTTON      "Help", IDB_UCMNSTLHELP, 157, 4, 40, 14, BS_HELP |
+                        BS_NOPOINTERFOCUS
+        AUTORADIOBUTTON "Ignore", IDC_UCMNSTLIGNORE, 49, 31, 38, 10,
+                        WS_TABSTOP
+        AUTORADIOBUTTON "Or", IDC_UCMNSTLOR, 93, 31, 27, 10, WS_TABSTOP
+        AUTORADIOBUTTON "And", IDC_UCMNSTLAND, 121, 31, 38, 10, WS_TABSTOP
+        GROUPBOX        "Lost lines and columns", IDC_UCMNSTLBOX, 16, 24,
+                        143, 27, NOT WS_GROUP
+    END
+END 
+
+DLGTEMPLATE IDD_UCMGETBMPNAME LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Create a bitmap", IDD_UCMGETBMPNAME, 0, 0, 203, 96, FS_MOUSEALIGN, FCF_SYSMENU | FCF_TITLEBAR 
+    BEGIN
+        ENTRYFIELD      "", IDC_UCMBMPCX,  49, 70, 32, 8, ES_MARGIN
+        ENTRYFIELD      "", IDC_UCMBMPCY, 148, 70, 32, 8, ES_MARGIN
+        LTEXT           "Width : ",  0, 9,   70, 32, 8
+        LTEXT           "Height : ", 0, 108, 70, 32, 8
+        LTEXT           "Name of the file : ", 0,  9,  50, 180,  8
+        ENTRYFIELD      "",         IDC_UCMBMPNAME,    9,  35, 180,  8, ES_MARGIN
+        DEFPUSHBUTTON   "OK",       IDB_UCMBMPOK,      9,   9,  40, 14
+        PUSHBUTTON      "Cancel",   IDB_UCMBMPCANCEL, 53,   9,  40, 14
+    END
+END
+
+DLGTEMPLATE IDD_RESBMP LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Built-in bitmaps", IDD_RESBMP, 33, 37, 314, 54, , FCF_SYSMENU
+| FCF_TITLEBAR BEGIN
+        CTEXT           "", IDC_RESBMPTEXT, 7, 4, 222, 15, DT_VCENTER | DT_WORDBREAK
+        PUSHBUTTON      "Cancel", IDB_RESBMPCANCEL, 268, 4, 40, 14
+    END
+END
+
+DLGTEMPLATE IDD_UCMDLG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Toolbar customization", IDD_UCMDLG, -11, -23, 303,
+            163, , FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        AUTOCHECKBOX    "Show the text on the icon toolbar", IDD_UCMDLG_TEXT, 6, 24, 180, 10
+        LTEXT           "Buffet toolbar :",  IDD_UCMDLG_BUFFETDESC,  6, 142, 100, 8
+        LTEXT           "Current toolbar :", IDD_UCMDLG_CURRENTDESC, 6,  84, 100, 8
+        DEFPUSHBUTTON   "OK",        IDD_UCMDLG_OK,            6,  4,  40, 14
+        PUSHBUTTON      "Cancel",    IDD_UCMDLG_CANCEL,       50,  4,  40, 14
+        PUSHBUTTON      "Default",   IDD_UCMDLG_DEFAULT,      94,  4,  40, 14
+        PUSHBUTTON      "Help",      IDD_UCMDLG_HELP,        138,  4,  40, 14, BS_NOPOINTERFOCUS
+        ICON            ID_SHREDDER, IDD_UCMDLG_SHREDDER,    240, 10,   0,  0
+        CONTROL         "",          IDD_UCMDLG_ACTIONS, 0, 0, 0, 0, WC_LISTBOX, NOT WS_VISIBLE | LS_NOADJUSTPOS
+        CONTROL         "",          IDD_UCMDLG_DESCR,   0, 0, 0, 0, WC_LISTBOX, NOT WS_VISIBLE | LS_NOADJUSTPOS
+    END
+END 
+
+// -- The strings of the string table should not have more than 255 characters
+STRINGTABLE PRELOAD
+BEGIN
+   NLS_POSITION                     "Position"
+   NLS_GENERAL                      "General"
+   NLS_ACTION                       "Action"
+   NLS_DESCEXEC                     "Execute the program given as a parameter"
+   NLS_UCMHLP                       "User Customizable Menu help"
+   NLS_ITEMADDERROR                 "The item cannot be added.  You must specify either title text or a bitmap."
+   NLS_ERROR                        "Error"
+   NLS_NOICESTART                   "Unable to start ICONEDIT.EXE program."
+   NLS_NOBMPFN                      "No bitmap file name specified."
+   NLS_BADBMPFN                     "Invalid bitmap file name."
+   NLS_LOADBMP                      "Load a bitmap"
+   NLS_OVERWRITETITLE               "Bitmap creation"
+   NLS_OVERWRITE                    "This file already exists, overwrite it?"
+   NLS_NOBMPRES                     "No built-in bitmaps were found."
+   NLS_BMPLOADING                   "Loading the bitmaps... "
+   NLS_BMPLOADED                    "Click on one of the buttons to select its bitmap."
+   NLS_ITEMDESCR                    "Item description"
+END
+
+#endif  /* !UCMINRES */
+
+// HELPTABLE IDH_UCM_TABLE
+// BEGIN
+//    HELPITEM IDW_UCMSCROLL,   IDH_SUBTABLE_HIDE,        PANEL_CM
+//    HELPITEM IDD_UCMNSTYLE,   IDH_SUBTABLE_STYLE,       PANEL_STYLE
+//    HELPITEM IDD_UCMSETTINGS, IDH_SUBTABLE_SETTINGS,    PANEL_SETTINGS
+//    HELPITEM IDD_UCMNBP0,     IDH_SUBTABLE_NB_CREATE,   PANEL_ITEMPOS
+//    HELPITEM IDD_UCMNBP1,     IDH_SUBTABLE_NB_BITMAP,   PANEL_ITEMBMP
+//    HELPITEM IDD_UCMNBP2,     IDH_SUBTABLE_NB_ACTION,   PANEL_ITEMACTION
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_HIDE
+// BEGIN
+//    HELPSUBITEM IDM_UCM_EDIT,        PANEL_CM_EDIT
+//    HELPSUBITEM IDM_UCM_CREATE,      PANEL_CM_CREATE
+//    HELPSUBITEM IDM_UCM_DELETE,      PANEL_CM_DELETE
+//    HELPSUBITEM IDM_UCM_STYLE,       PANEL_CM_STYLE
+//    HELPSUBITEM IDM_UCM_DEFAULT,     PANEL_CM_DEFAULT
+//    HELPSUBITEM IDM_UCM_LOAD,        PANEL_CM_LOAD
+//    HELPSUBITEM IDM_UCM_SAVEAS,      PANEL_CM_SAVEAS
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_STYLE
+// BEGIN
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_SETTINGS
+// BEGIN
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_NB_CREATE
+// BEGIN
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_NB_BITMAP
+// BEGIN
+// END
+// 
+// HELPSUBTABLE IDH_SUBTABLE_NB_ACTION
+// BEGIN
+// END
+
+

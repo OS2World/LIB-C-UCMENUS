@@ -1,0 +1,289 @@
+/* Resource File */
+#include <os2.h>
+#include "samp1.h"
+#include "ucmenus.h"
+
+BITMAP ID_GALORE_BITMAP "..\\galore.bmp"
+
+ICON ID_FRAME_RESOURCE "..\\ucmsamp.ico"
+
+/* Standard window textual menu bar */
+
+MENU ID_FRAME_RESOURCE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+   SUBMENU "~File", ID_ACTION_FILE, MIS_TEXT
+   BEGIN
+      MENUITEM "~New",     ID_ACTION_NEW,  MIS_TEXT
+      MENUITEM "~Open",    ID_ACTION_OPEN, MIS_TEXT
+      MENUITEM "~Save",    ID_ACTION_SAVE, MIS_TEXT
+      MENUITEM SEPARATOR
+      MENUITEM "~Exit\tAlt-F4", ID_ACTION_CLOSE, MIS_TEXT
+   END
+   SUBMENU  "~Edit", ID_ACTION_EDIT, MIS_TEXT
+   BEGIN
+      MENUITEM "~Copy",   ID_ACTION_COPY,  MIS_TEXT
+      MENUITEM "C~ut",    ID_ACTION_CUT,   MIS_TEXT
+      MENUITEM "~Paste",  ID_ACTION_PASTE, MIS_TEXT
+      MENUITEM "Un~do",   ID_ACTION_UNDO,  MIS_TEXT
+      MENUITEM "~Link...",ID_ACTION_LINK,  MIS_TEXT
+      MENUITEM SEPARATOR
+      MENUITEM "~Select all",   ID_ACTION_SELECTALL,   MIS_TEXT
+      MENUITEM "Deselect ~all", ID_ACTION_DESELECTALL, MIS_TEXT
+   END
+   SUBMENU  "~View", ID_ACTION_VIEW, MIS_TEXT
+   BEGIN
+      MENUITEM "~Command Bar",   ID_ACTION_VIEWCMD,   MIS_TEXT
+/*    MENUITEM "~Tool Bar",      ID_ACTION_VIEWTOOL,  MIS_TEXT */
+      MENUITEM "C~olor Bar",     ID_ACTION_VIEWCOLOR, MIS_TEXT
+/*    MENUITEM "~Disk Bar",      ID_ACTION_VIEWDISK,  MIS_TEXT */
+      MENUITEM SEPARATOR
+      MENUITEM "~Zoom In",       ID_ACTION_ZOOMIN,  MIS_TEXT
+      MENUITEM "Zoom Ou~t",      ID_ACTION_ZOOMOUT, MIS_TEXT
+   END
+   SUBMENU "~Tools", ID_ACTION_TOOLS, MIS_TEXT
+   BEGIN
+      MENUITEM "~Selection  ",   ID_ACTION_TOOLSLCT,  MIS_TEXT
+      MENUITEM "~Draw Pen   ",   ID_ACTION_TOOLDRAW,  MIS_TEXT
+      MENUITEM "~Brush      ",   ID_ACTION_TOOLBRSH,  MIS_TEXT
+      MENUITEM "~Eraser     ",   ID_ACTION_TOOLERAS,  MIS_TEXT
+      MENUITEM "Spray ~Can  ",   ID_ACTION_TOOLSPRY,  MIS_TEXT
+      MENUITEM "~Fill Roller",   ID_ACTION_TOOLFILL,  MIS_TEXT
+      MENUITEM "~Line       ",   ID_ACTION_TOOLLINE,  MIS_TEXT
+      MENUITEM "~Arc        ",   ID_ACTION_TOOLARC,   MIS_TEXT
+      MENUITEM "~Rectangle  ",   ID_ACTION_TOOLRECT,  MIS_TEXT
+      MENUITEM "~Circle     ",   ID_ACTION_TOOLCIRC,  MIS_TEXT
+      MENUITEM "~Text       ",   ID_ACTION_TOOLTEXT,  MIS_TEXT
+      MENUITEM "L~ine Segments", ID_ACTION_TOOLLSEG,  MIS_TEXT
+      MENUITEM "C~urve      ",   ID_ACTION_TOOLCURV,  MIS_TEXT
+      MENUITEM "S~hape      ",   ID_ACTION_TOOLSHP,   MIS_TEXT
+   END
+   SUBMENU "~Colors", ID_ACTION_COLORS, MIS_TEXT
+   BEGIN
+      MENUITEM "Black       ",   ID_ACTION_BLACK,   MIS_TEXT
+      MENUITEM "Dark gray   ",   ID_ACTION_DGRAY,   MIS_TEXT
+      MENUITEM "Pale gray   ",   ID_ACTION_PGRAY,   MIS_TEXT
+      MENUITEM "Pale pink   ",   ID_ACTION_PPINK,   MIS_TEXT
+      MENUITEM "Dark blue   ",   ID_ACTION_DBLUE,   MIS_TEXT
+      MENUITEM "Blue        ",   ID_ACTION_BLUE,    MIS_TEXT
+      MENUITEM "Medium blue ",   ID_ACTION_MBLUE,   MIS_TEXT
+      MENUITEM "Dark cyan   ",   ID_ACTION_DCYAN,   MIS_TEXT
+      MENUITEM "Cyan        ",   ID_ACTION_CYAN,    MIS_TEXT
+      MENUITEM "Dark green  ",   ID_ACTION_DGREEN,  MIS_TEXT
+      MENUITEM "Medium green",   ID_ACTION_MGREEN,  MIS_TEXT
+      MENUITEM "Green       ",   ID_ACTION_GREEN,   MIS_TEXT
+      MENUITEM "",               0,                 MIS_BREAKSEPARATOR
+      MENUITEM "Dark red    ",   ID_ACTION_DRED,    MIS_TEXT
+      MENUITEM "Medium red  ",   ID_ACTION_MRED,    MIS_TEXT
+      MENUITEM "Red         ",   ID_ACTION_RED,     MIS_TEXT
+      MENUITEM "Orange      ",   ID_ACTION_ORANGE,  MIS_TEXT
+      MENUITEM "Dark pink   ",   ID_ACTION_DPINK,   MIS_TEXT
+      MENUITEM "Pink        ",   ID_ACTION_PINK,    MIS_TEXT
+      MENUITEM "Brown       ",   ID_ACTION_BROWN,   MIS_TEXT
+      MENUITEM "Yellow      ",   ID_ACTION_YELLOW,  MIS_TEXT
+      MENUITEM "White       ",   ID_ACTION_WHITE,   MIS_TEXT
+      MENUITEM SEPARATOR
+      MENUITEM "~Palette    ",   ID_ACTION_PALETTE,  MIS_TEXT
+   END
+   SUBMENU "~Options", ID_ACTION_OPTIONS, MIS_TEXT
+   BEGIN
+      MENUITEM "Fonts       ",   ID_ACTION_FONTS, MIS_TEXT
+      SUBMENU  "Styles      ",   ID_ACTION_STYLES,MIS_TEXT
+      BEGIN
+        MENUITEM "Bold      ",   ID_ACTION_BOLD  ,MIS_TEXT
+        MENUITEM "Italic    ",   ID_ACTION_ITALIC,MIS_TEXT
+        MENUITEM "Underline ",   ID_ACTION_UNDERLINE ,MIS_TEXT
+      END
+      MENUITEM "Grid        ",   ID_ACTION_GRID,  MIS_TEXT
+      MENUITEM "Ruler       ",   ID_ACTION_RULER, MIS_TEXT
+      MENUITEM "Magnify     ",   ID_ACTION_MAG,   MIS_TEXT
+      SUBMENU "~Disks", ID_ACTION_DISKS, MIS_HELP
+      BEGIN
+        MENUITEM "A: Diskette ",   ID_ACTION_DISKA,  MIS_TEXT
+        MENUITEM "B: Diskette ",   ID_ACTION_DISKB,  MIS_TEXT
+        MENUITEM "C: Fixed disk",  ID_ACTION_DISKC,  MIS_TEXT
+        MENUITEM "D: CD-ROM ",     ID_ACTION_DISKD,  MIS_TEXT
+      END
+   END
+   SUBMENU "~Help", ID_ACTION_HELP, MIS_HELP
+   BEGIN
+      MENUITEM "~Help Index",    SC_HELPINDEX,MIS_SYSCOMMAND
+      MENUITEM "~Extended Help", SC_HELPEXTENDED,MIS_SYSCOMMAND
+      MENUITEM "~Using Help",    ID_ACTION_USINGHELP,MIS_TEXT
+      MENUITEM "~Keys Help",     SC_HELPKEYS,MIS_SYSCOMMAND
+      MENUITEM SEPARATOR
+      MENUITEM "~Product Information", ID_ACTION_ABOUT, MIS_TEXT
+   END
+END
+
+/* Define bitmaps for menus bar.  To make processing of the */
+/* UCMENU_QUERYRESBMP message easy, the resource IDs for    */
+/* all bitmaps are sequential.  Some 'holes' in the list    */
+/* are OK (e.g. it does not have to be strictly sequential).*/
+/* IDs start with MIN_BMPID and ends at MAX_BMPID.          */
+
+BITMAP 1   "..\\open.bmp"             /*--- Commands ---*/
+BITMAP 2   "..\\save.bmp"
+BITMAP 3   "..\\cut.bmp"
+BITMAP 4   "..\\copy.bmp"
+BITMAP 5   "..\\paste.bmp"
+BITMAP 6   "..\\new.bmp"
+BITMAP 7   "..\\font.bmp"
+BITMAP 8   "..\\help.bmp"
+BITMAP 9   "..\\grid.bmp"
+BITMAP 10  "..\\mag.bmp"
+BITMAP 11  "..\\undo.bmp"
+BITMAP 13  "..\\ruler.bmp"
+bitmap 14  "..\\link.bmp"
+bitmap 15  "..\\select.bmp"
+bitmap 16  "..\\dselect.bmp"
+bitmap 17  "..\\zoomin.bmp"
+bitmap 18  "..\\zoomout.bmp"
+bitmap 19  "..\\readme.bmp"
+
+BITMAP 20 "..\\arrow.bmp"            /*--- Tools ---*/
+BITMAP 21 "..\\line.bmp"
+BITMAP 22 "..\\arc.bmp"
+BITMAP 23 "..\\rect.bmp"
+BITMAP 24 "..\\circle.bmp"
+BITMAP 25 "..\\text.bmp"
+BITMAP 26 "..\\pen.bmp"
+BITMAP 27 "..\\roller.bmp"
+BITMAP 28 "..\\erase.bmp"
+BITMAP 29 "..\\spray.bmp"
+BITMAP 30 "..\\lineseg.bmp"
+BITMAP 31 "..\\curve.bmp"
+BITMAP 32 "..\\shape.bmp"
+BITMAP 33 "..\\brush.bmp"
+
+BITMAP 35 "..\\diskette.bmp"         /*--- Disks ---*/
+BITMAP 36 "..\\disk.bmp"
+BITMAP 37 "..\\cdrom.bmp"
+
+BITMAP 40 "..\\black.bmp"            /*--- Colors ---*/
+BITMAP 41 "..\\darkgray.bmp"
+BITMAP 42 "..\\darkblue.bmp"
+BITMAP 43 "..\\blue.bmp"
+BITMAP 44 "..\\darkgree.bmp"
+BITMAP 45 "..\\green.bmp"
+BITMAP 46 "..\\darkcyan.bmp"
+BITMAP 47 "..\\cyan.bmp"
+BITMAP 48 "..\\darkred.bmp"
+BITMAP 49 "..\\red.bmp"
+BITMAP 50 "..\\darkpink.bmp"
+BITMAP 51 "..\\pink.bmp"
+BITMAP 52 "..\\brown.bmp"
+BITMAP 53 "..\\yellow.bmp"
+BITMAP 54 "..\\palegray.bmp"
+BITMAP 55 "..\\white.bmp"
+BITMAP 56 "..\\orange.bmp"
+BITMAP 57 "..\\palepink.bmp"
+BITMAP 58 "..\\medblue.bmp"
+BITMAP 59 "..\\medgreen.bmp"
+BITMAP 60 "..\\medred.bmp"
+BITMAP 61 "..\\cpalett.bmp"
+
+BITMAP 62 "..\\styles.bmp"
+BITMAP 63 "..\\fontbold.bmp"
+BITMAP 64 "..\\fontital.bmp"
+BITMAP 65 "..\\fontunde.bmp"
+
+BITMAP 66 "..\\unknown.bmp"
+
+/**************************************************************/
+/* Resource template for UCMenu toolbar.                      */
+/*                                                            */
+/* Text strings are interpreted as:                           */
+/*                                                            */
+/* "<c>Text<c>BitmapID<c>ActionStr<c>ParamStr<c>DataStr"      */
+/*                                                            */
+/*   where <c> is any character that does not appear in       */
+/*   the strings.                                             */
+/*                                                            */
+/* Item style MIS_SPACER produces a gap in the menu bar.      */
+/*                                                            */
+/* Note that syntax does not allow symbolic specification of  */
+/* bitmap IDs so they are hardcoded.                          */
+/*                                                            */
+/* IDs are arbitrary since we detect menu selects by "Action" */
+/* strings, not by item ID.                                   */
+/**************************************************************/
+
+/* For the command bar, we keep the bubble-help in DataString */
+
+MENU ID_COMMANDBAR LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+  MENUITEM "/New/6/Cmd: New//Create new drawing",            1,  MIS_TEXT
+  MENUITEM "/Open/1/Cmd: Open//Load drawing from a file",    2,  MIS_TEXT
+  MENUITEM "/Save/2/Cmd: Save//Save drawing to a file",      3,  MIS_TEXT
+  MENUITEM "",                                               4,  MIS_SPACER
+  MENUITEM "/Cut/3/Cmd: Cut//Cut selected objects to clipboard",        6,  MIS_TEXT
+  MENUITEM "/Copy/4/Cmd: Copy//Copy selected objects to clipboard",     7,  MIS_TEXT
+  MENUITEM "/Paste/5/Cmd: Paste//Paste clipboard objects into drawing", 8,  MIS_TEXT
+  MENUITEM "",                                                          9,  MIS_SPACER
+  MENUITEM "/Fonts/7/Cmd: Fonts//Change font",                  11, MIS_TEXT
+  SUBMENU  "/Styles/62/Styles Submenu//Select font styles",     19, MIS_TEXT
+  BEGIN
+    MENUITEM "/Bold/63/Style: Bold",         20, MIS_TEXT
+    MENUITEM "/Italic/64/Style: Italic",     21, MIS_TEXT
+    MENUITEM "/UnderLn/65/Style: Underline", 22, MIS_TEXT
+  END
+  MENUITEM "/Grid/9/Cmd: Grid//Display grid lines",             12,  MIS_TEXT
+  MENUITEM "/Ruler/13/Cmd: Ruler//Display ruler markings",      14,  MIS_TEXT
+  MENUITEM "",                                                  16,  MIS_SPACER
+/*MENUITEM "/Readme!/19/Cmd: Readme//Display release notes",    17,  MIS_TEXT*/
+  MENUITEM "/Help/8/Cmd: Help//Display help screens",           18,  MIS_TEXT
+END
+
+MENU ID_TOOLBAR LOADONCALL MOVEABLE DISCARDABLE 
+BEGIN
+  MENUITEM "//20/Tool: Selection",     1,   MIS_TEXT
+  MENUITEM "//26/Tool: Draw",          2,   MIS_TEXT
+  MENUITEM "//33/Tool: Brush",         3,   MIS_TEXT
+  MENUITEM "//28/Tool: Eraser",        4,   MIS_TEXT
+  MENUITEM "//29/Tool: Spraycan",      5,   MIS_TEXT
+  MENUITEM "//27/Tool: Fill",          6,   MIS_TEXT
+  MENUITEM "//21/Tool: Line",          7,   MIS_TEXT
+  MENUITEM "//22/Tool: Arc",           8,   MIS_TEXT
+  MENUITEM "//23/Tool: Rectangle",     9,   MIS_TEXT
+  MENUITEM "//24/Tool: Circle",        10,  MIS_TEXT
+  MENUITEM "//25/Tool: Text",          11,  MIS_TEXT
+  MENUITEM "//30/Tool: Segmented Line",12,  MIS_TEXT
+  MENUITEM "//31/Tool: Curve",         13,  MIS_TEXT
+  MENUITEM "//32/Tool: Shape",         14,  MIS_TEXT
+END
+
+MENU ID_DISKBAR LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+  MENUITEM "/A:/35/Disk A", 1,   MIS_TEXT
+  MENUITEM "/B:/35/Disk B", 2,   MIS_TEXT
+  MENUITEM "/C:/36/Disk C", 3,   MIS_TEXT
+  MENUITEM "/D:/37/Disk D", 6,   MIS_TEXT
+END
+
+MENU ID_COLORBAR LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+  MENUITEM "//40/Color: Black",      1,  MIS_TEXT
+  MENUITEM "//41/Color: Dark gray",  2,  MIS_TEXT
+  MENUITEM "//54/Color: Pale gray",  15, MIS_TEXT
+  MENUITEM "//57/Color: Pale pink",  18, MIS_TEXT
+  MENUITEM "//42/Color: Dark blue",  3,  MIS_TEXT
+  MENUITEM "//43/Color: Blue",       4,  MIS_TEXT
+  MENUITEM "//58/Color: Medium blue",19, MIS_TEXT
+  MENUITEM "//46/Color: Dark cyan",  7,  MIS_TEXT
+  MENUITEM "//47/Color: Cyan",       8,  MIS_TEXT
+  MENUITEM "//44/Color: Dark green", 5,  MIS_TEXT
+  MENUITEM "//59/Color: Medium green",20,MIS_TEXT
+  MENUITEM "//45/Color: Green",      6,  MIS_TEXT
+  MENUITEM "//48/Color: Dark red",   9,  MIS_TEXT
+  MENUITEM "//60/Color: Medium red", 21, MIS_TEXT
+  MENUITEM "//49/Color: Red",        10, MIS_TEXT
+  MENUITEM "//56/Color: Orange",     17, MIS_TEXT
+  MENUITEM "//50/Color: Dark pink",  11, MIS_TEXT
+  MENUITEM "//51/Color: Pink",       12, MIS_TEXT
+  MENUITEM "//52/Color: Brown",      13, MIS_TEXT
+  MENUITEM "//53/Color: Yellow",     14, MIS_TEXT
+  MENUITEM "//55/Color: White",      16, MIS_TEXT
+  MENUITEM "",                       98, MIS_SPACER
+  MENUITEM "//61/Color Palette",     99, MIS_TEXT
+END
+

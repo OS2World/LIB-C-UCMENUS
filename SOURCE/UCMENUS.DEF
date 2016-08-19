@@ -1,0 +1,35 @@
+LIBRARY   UCMENUS INITINSTANCE  TERMINSTANCE
+
+DESCRIPTION 'User Customizable Menus, (C) IBM Corp., 1995'
+PROTMODE
+DATA         MULTIPLE  NONSHARED
+
+EXPORTS
+    UCMenuCreateFromResource
+    UCMenuCreateFromTemplate
+    UCMenuCreateFromHMenu
+    UCMenuLoadBitmap
+    UCMenuLoadTemplate
+    UCMenuSaveTemplate
+    UCMenuMakeTemplate
+    UCMenuLoadTemplateIni
+    UCMenuSaveTemplateIni
+    UCMenuAlloc
+    UCMenuStrdup
+    UCMenuFree
+    UCMenuItemFree
+    UCMenuItemDup
+    UCMenuFreeMenuData
+    UCMenuNew
+    UCMenuLoadDefault
+    UCMenuGetActionID
+    UCMenuSetActionAttr
+    UCMenuSaveStyle
+    UCMenuLoadStyle
+    UCMenuSaveStyleIni
+    UCMenuLoadStyleIni
+    UCMenuResourceBuffetDlg
+    UCMenuTemplateBuffetDlg
+    UCMenuGetVersion
+    UCMenuIdFromCoord
+
